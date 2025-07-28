@@ -21,4 +21,21 @@ abstract class Command<Output extends Object> extends ChangeNotifier {
   bool get completed => _result is Ok;
 
   bool get error => _result is Error;
+
+  Future<void> _execute(CommandAction0<Output> action) async {
+    // Impede que a action seja executada mais de 1 vez simultaneamente.
+    if (_running) return;
+
+    _running = true; // Agora a action está em execução
+    _result = null; // Result volta a ser null
+
+    notifyListeners();
+
+    try {
+      _result = await action();
+    } finally {
+      _running = false;
+      notifyListeners();
+    }
+  }
 }
