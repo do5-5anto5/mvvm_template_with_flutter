@@ -51,6 +51,54 @@ void main() {
 
       expect(command0.result!.asError.error, isA<Exception>());
     });
+
+    test('Should test Command1 returns Ok with params', () async {
+      final command1 = Command1<String, String>(getOkResultWithParams);
+
+      expect(command1.running, false);
+
+      expect(command1.completed, false);
+
+      expect(command1.error, false);
+
+      expect(command1.result, isNull);
+
+      await command1.execute('Entry Params');
+
+      expect(command1.running, false);
+
+      expect(command1.completed, true);
+
+      expect(command1.error, false);
+
+      expect(command1.result, isNotNull);
+
+      expect(command1.result!.asOk.value, 'Task has Success with params: Entry Params');
+    });
+
+    test('Should test Command1 returns Error with params', () async {
+      final command1 = Command1<bool, String>(getErrorResultWithParams);
+
+      expect(command1.running, false);
+
+      expect(command1.completed, false);
+
+      expect(command1.error, false);
+
+      expect(command1.result, isNull);
+
+      await command1.execute('Entry Params');
+
+      expect(command1.running, false);
+
+      expect(command1.completed, false);
+
+      expect(command1.error, true);
+
+      expect(command1.result, isNotNull);
+
+      expect(command1.result!.asError.error, isA<Exception>());
+    });
   });
 }
 
@@ -62,4 +110,14 @@ Future<Result<String>> getOkResult() async {
 Future<Result<bool>> getErrorResult() async {
   await Future.delayed(Duration(milliseconds: 500));
   return Result.error(Exception('Task has Error'));
+}
+
+Future<Result<String>> getOkResultWithParams(String params) async {
+  await Future.delayed(Duration(milliseconds: 500));
+  return Result.ok('Task has Success with params: $params');
+}
+
+Future<Result<bool>> getErrorResultWithParams(String params) async {
+  await Future.delayed(Duration(milliseconds: 500));
+  return Result.error(Exception('Task has Error with params: $params'));
 }
