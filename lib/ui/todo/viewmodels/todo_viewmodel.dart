@@ -21,9 +21,7 @@ class TodoViewmodel extends ChangeNotifier {
   Future<Result> _load() async {
     await Future.delayed(Duration(seconds: 2));
     final List<Todo> todos = [];
-
     _todos = todos;
-
     notifyListeners();
 
     return Result.ok(todos);
@@ -31,25 +29,19 @@ class TodoViewmodel extends ChangeNotifier {
 
   Future<Result<Todo>> _addTodo(String name) async {
     final lastIndex = _todos.length;
-
-    await Future.delayed(Duration(seconds: 2));
-
+    await Future.delayed(const Duration(seconds: 1));
     final newTodo = Todo(id: '${lastIndex + 1}', name: name);
-
     _todos.add(newTodo);
-
     notifyListeners();
-
+    
     return Result.ok(newTodo);
   }
 
   Future<Result<String>> _removeTodo(Todo todo) async {
     await Future.delayed(Duration(seconds: 2));
-
     _todos.removeWhere((t) => t.id == todo.id);
-
     notifyListeners();
-
+    
     return Result.ok('Deleted.');
   }
 }
