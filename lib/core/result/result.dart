@@ -1,4 +1,4 @@
-abstract class Result<T extends Object> {
+abstract class Result<T> {
   const Result();
 
   // Using TearsOff constructors
@@ -7,12 +7,12 @@ abstract class Result<T extends Object> {
   factory Result.error(Exception error) = Error._;
 }
 
-class Ok<T extends Object> extends Result<T> {
+class Ok<T> extends Result<T> {
   const Ok._(this.value);
   final T value;
 }
 
-class Error<T extends Object> extends Result<T> {
+class Error<T> extends Result<T> {
   const Error._(this.error);
   final Exception error;
 }
@@ -29,7 +29,7 @@ extension ResultErrorExtension on Exception {
   }
 }
 
-extension ResultCasting<T extends Object> on Result<T> {
+extension ResultCasting<T> on Result<T> {
   Ok<T> get asOk => this as Ok<T>;
 
   Error<T> get asError => this as Error<T>;

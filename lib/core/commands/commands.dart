@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:mvvm_template_with_flutter/core/result/result.dart';
 
 // Command0 não exige parametros de entrada
-typedef CommandAction0<Output extends Object> =
+typedef CommandAction0<Output> =
     Future<Result<Output>> Function();
 
 // Command1 exige um parametro de entrada
-typedef CommandAction1<Output extends Object, Input extends Object> =
+typedef CommandAction1<Output , Input> =
     Future<Result<Output>> Function(Input);
 
-abstract class Command<Output extends Object> extends ChangeNotifier {
+abstract class Command<Output> extends ChangeNotifier {
   bool _running = false;
 
   bool get running => _running;
@@ -40,7 +40,7 @@ abstract class Command<Output extends Object> extends ChangeNotifier {
   }
 }
 
-class Command0<Output extends Object> extends Command<Output> {
+class Command0<Output> extends Command<Output> {
   final CommandAction0<Output> action;
   Command0(this.action);
 
@@ -49,7 +49,7 @@ class Command0<Output extends Object> extends Command<Output> {
   }
 }
 
-class Command1<Output extends Object, Input extends Object>
+class Command1<Output, Input>
     extends Command<Output> {
   final CommandAction1<Output, Input> action;
   Command1(this.action);
