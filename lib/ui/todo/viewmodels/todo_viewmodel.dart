@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:mvvm_template_with_flutter/core/commands/commands.dart';
-import 'package:mvvm_template_with_flutter/core/result/result.dart';
+import 'package:mvvm_template_with_flutter/utils/commands/commands.dart';
+import 'package:mvvm_template_with_flutter/utils/result/result.dart';
 import 'package:mvvm_template_with_flutter/data/repositories/todo_repository.dart';
 import 'package:mvvm_template_with_flutter/domain/models/todo.dart';
 
