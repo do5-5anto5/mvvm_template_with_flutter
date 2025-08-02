@@ -1,0 +1,32 @@
+import 'package:mvvm_template_with_flutter/core/result/result.dart';
+import 'package:mvvm_template_with_flutter/data/repositories/todo_repository.dart';
+import 'package:mvvm_template_with_flutter/domain/models/todo.dart';
+
+class TodoRepositoryDev extends TodoRepository {
+  final List<Todo> _todos = [];
+
+  @override
+  Future<Result<Todo>> add(String name) async {
+    final lastIndex = _todos.length;
+
+    final createdTodo = Todo(id: '${lastIndex + 1}', name: name);
+
+    _todos.add(createdTodo);
+
+    return Result.ok(createdTodo);
+  }
+
+  @override
+  Future<Result<void>> delete(Todo todo) async {
+    if (_todos.contains(todo)) {
+      _todos.remove(todo);
+    }
+
+    return Result.ok(null);
+  }
+
+  @override
+  Future<Result<List<Todo>>> get() async {
+    return Result.ok(_todos);
+  }
+}
