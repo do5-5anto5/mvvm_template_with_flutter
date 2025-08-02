@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mvvm_template_with_flutter/core/commands/commands.dart';
-import 'package:mvvm_template_with_flutter/core/result/result.dart';
+import 'package:mvvm_template_with_flutter/utils/commands/commands.dart';
+import 'package:mvvm_template_with_flutter/utils/result/result.dart';
 
 void main() {
   group('Should test Commands', () {

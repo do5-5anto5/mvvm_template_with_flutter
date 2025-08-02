@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mvvm_template_with_flutter/core/result/result.dart';
+import 'package:mvvm_template_with_flutter/utils/result/result.dart';
 
 // Command0 não exige parametros de entrada
 typedef CommandAction0<Output> =
