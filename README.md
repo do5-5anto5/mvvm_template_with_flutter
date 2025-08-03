@@ -3,6 +3,8 @@
 
 # Flutter MVVM
 
+Simple implementation from MVVM to Flutter with reactive state management
+
 **Core Components**  
 `Command` (typed actions) + `Result` (error handling) + `Repository` (data isolation)
 
@@ -51,6 +53,25 @@ class FakeRepo implements MyRepo {
 }
 ```
 
+## Database Structure (json-server mock api)  
+
+Simulating a local API REST during development:
+
+### Start server  
+```bash
+json-server --watch server/db.json --port 3000
+```
+**Access:** [http://localhost:3000](http://localhost:3000)  
+
+### `db.json` structure
+```json
+{
+  "todos": [
+    { "id": "a324", "name": "Primeiro Todo" },
+    { "id": "05bf", "name": "Segundo Todo" }
+  ]
+}
+```
 **Flow**  
 `Widget` → `ViewModel` → `Repository` → `DataSource`  
 
