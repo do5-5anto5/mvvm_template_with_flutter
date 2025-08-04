@@ -52,7 +52,7 @@ class FakeRepo implements MyRepo {
   Future<Result<List<Item>>> load() async => Result.ok([Item()]);
 }
 ```
-
+---
 ## Database Structure (json-server mock api)  
 
 Simulating a local API REST during development:
@@ -72,6 +72,16 @@ json-server --watch server/db.json --port 3000
   ]
 }
 ```
+
+---
+## Freezed (Imutable Models & Serialization)
+### Model generation
+```
+// on terminal
+flutter pub run build_runner
+```
+
+--- 
 **Flow**  
 `Widget` → `ViewModel` → `Repository` → `DataSource`  
 
