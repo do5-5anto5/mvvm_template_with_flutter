@@ -4,6 +4,7 @@ import 'package:mvvm_template_with_flutter/data/services/api/api_client.dart';
 import 'package:mvvm_template_with_flutter/route/routes.dart';
 import 'package:mvvm_template_with_flutter/ui/todo/viewmodels/todo_viewmodel.dart';
 import 'package:mvvm_template_with_flutter/ui/todo/widgets/todo_screen.dart';
+import 'package:mvvm_template_with_flutter/ui/todo_details/widgets/todo_details.dart';
 
 GoRouter routesConfig() {
   return GoRouter(
@@ -20,6 +21,16 @@ GoRouter routesConfig() {
             ),
           );
         },
+        routes: [
+          GoRoute(
+            path: ':id',
+            builder: (context, state) {
+              final todoId = state.pathParameters['id']!;
+
+              return TodoDetailsScreen(id: todoId);
+            },
+          ),
+        ],
       ),
     ],
   );
