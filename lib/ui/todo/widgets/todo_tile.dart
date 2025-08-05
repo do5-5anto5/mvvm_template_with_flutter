@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mvvm_template_with_flutter/domain/models/todo.dart';
+import 'package:mvvm_template_with_flutter/route/routes.dart';
 
 class TodoTile extends StatelessWidget {
   const TodoTile({super.key, required this.todo, required this.onDeleteTodo});
@@ -8,15 +10,20 @@ class TodoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Text(todo.id!),
-      title: Text(todo.name),
-      trailing: IconButton(
-        onPressed: () {
-          onDeleteTodo(todo);
-        },
-        icon: Icon(Icons.delete),
-        color: Colors.red,
+    return GestureDetector(
+      onTap: () => context.push(Routes.todoDetails(todo.id!)),
+      child: Card(
+        child: ListTile(
+          leading: Text(todo.id!),
+          title: Text(todo.name),
+          trailing: IconButton(
+            onPressed: () {
+              onDeleteTodo(todo);
+            },
+            icon: Icon(Icons.delete),
+            color: Colors.red,
+          ),
+        ),
       ),
     );
   }
