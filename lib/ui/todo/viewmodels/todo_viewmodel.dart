@@ -23,7 +23,6 @@ class TodoViewmodel extends ChangeNotifier {
   List<Todo> get todos => _todos;
 
   Future<Result> _load() async {
-
     final result = await _todoRepository.get();
 
     switch (result) {
@@ -44,6 +43,9 @@ class TodoViewmodel extends ChangeNotifier {
 
     switch (result) {
       case Ok<Todo>():
+        // ATENÇÃO: No ambiente dev, o TodoRepositoryDev já adiciona o item à sua lista interna.
+        // Não adicionar manualmente ao _todos para evitar duplicação.
+        _todos.add(result.value);
         notifyListeners();
         break;
       case Error():
@@ -58,8 +60,8 @@ class TodoViewmodel extends ChangeNotifier {
 
     switch (result) {
       case Ok<void>():
+        _todos.remove(todo);
         notifyListeners();
-        await _load();
         break;
       case Error():
         //TODO: implement Logging
