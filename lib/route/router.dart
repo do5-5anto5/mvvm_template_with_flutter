@@ -34,7 +34,6 @@ GoRouter routesConfig() {
               todoDetailsViewmodel.load.execute(todoId);
 
               return TodoDetailsScreen(
-                id: todoId,
                 todoDetailsViewmodel: todoDetailsViewmodel,
               );
             },
