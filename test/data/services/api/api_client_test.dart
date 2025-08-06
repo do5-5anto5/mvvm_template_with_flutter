@@ -50,11 +50,25 @@ void main() {
       final result = await apiClient.updateTodo(
         UpdateTodoApiModel(
           id: createTodoResult.asOk.value.id!,
-          name: '${createTodoResult.asOk.value.id} updated at ${DateTime.now().toIso8601String()}',
+          name:
+              '${createTodoResult.asOk.value.id} updated at ${DateTime.now().toIso8601String()}',
         ),
       );
 
       expect(result, isA<Result<Todo>>());
+    });
+
+    test('should get to by id', () async {
+      const CreateTodoApiModel todoToCreate = CreateTodoApiModel(
+        name: 'Todo created on Test',
+      );
+
+      final createTodoResult = await apiClient.postTodo(todoToCreate);
+
+      final result = await apiClient.getById(createTodoResult.asOk.value.id!);
+
+      expect(result, isA<Result<Todo>>());
+      expect(result.asOk.value.id, createTodoResult.asOk.value.id);
     });
   });
 }
