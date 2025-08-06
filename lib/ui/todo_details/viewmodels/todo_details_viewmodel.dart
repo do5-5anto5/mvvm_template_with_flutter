@@ -12,10 +12,10 @@ class TodoDetailsViewmodel extends ChangeNotifier {
     load = Command1(_load);
   }
 
+  late final Command1<Todo, String> load;
+
   late Todo _todo;
   Todo get todo => _todo;
-
-  late final Command1<Todo, String> load;
 
   Future<Result<Todo>> _load(String id) async {
     try {
@@ -23,6 +23,7 @@ class TodoDetailsViewmodel extends ChangeNotifier {
 
       switch (result) {
         case Ok<Todo>():
+          _todo = result.value;
           return Result.ok(result.value);
         default:
           return result;
