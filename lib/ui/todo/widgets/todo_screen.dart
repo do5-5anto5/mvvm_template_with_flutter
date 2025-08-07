@@ -63,21 +63,19 @@ class _TodoScreenState extends State<TodoScreen> {
       body: ListenableBuilder(
         listenable: widget.todoViewmodel.load,
         builder: (context, child) {
-          if (widget.todoViewmodel.load.running) {
-            return const Center(child: CircularProgressIndicator());
+          if (widget.todoViewmodel.load.running) {return const Center(child: CircularProgressIndicator());
           }
 
-          if (widget.todoViewmodel.load.error) {
-            return const Center(child: Text('Erro ao carregar tarefas...'));
+          if (widget.todoViewmodel.load.error) {return const Center(child: Text('Erro ao carregar tarefas...'));
           }
-
           return child!;
         },
         child: ListenableBuilder(
           listenable: widget.todoViewmodel,
           builder: (context, child) {
             return TodosList(
-              todos: widget.todoViewmodel.todos,
+              todoViewmodel: widget.todoViewmodel,
+              // todos: widget.todoViewmodel.todos,
               onDeleteTodo: (todo) {
                 widget.todoViewmodel.deleteTodo.execute(todo);
               },
