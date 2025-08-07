@@ -84,7 +84,11 @@ class _AddTodoFormState extends State<AddTodoForm> {
               ElevatedButton(
                 onPressed: () {
                   if (formKey.currentState?.validate() == true) {
-                    widget.todoViewmodel.addTodo.execute(nameController.text);
+                    widget.todoViewmodel.addTodo.execute((
+                      nameController.text,
+                      "",
+                      false,
+                    ));
                   }
                 },
                 child: Text('Salvar'),

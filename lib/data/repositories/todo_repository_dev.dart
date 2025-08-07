@@ -6,10 +6,19 @@ class TodoRepositoryDev extends TodoRepository {
   final List<Todo> _todos = [];
 
   @override
-  Future<Result<Todo>> add(String name) async {
+  Future<Result<Todo>> add({
+    required String name,
+    required String description,
+    required bool done,
+  }) async {
     final lastIndex = _todos.length;
 
-    final createdTodo = Todo(id: '${lastIndex + 1}', name: name);
+    final createdTodo = Todo(
+      id: '${lastIndex + 1}',
+      name: name,
+      description: description,
+      done: done,
+    );
 
     _todos.add(createdTodo);
 
@@ -33,5 +42,14 @@ class TodoRepositoryDev extends TodoRepository {
   @override
   Future<Result<Todo>> getById(String id) async {
     return Result.ok(_todos.where((e) => e.id == id).first);
+  }
+
+  @override
+  Future<Result<Todo>> update(Todo todo) async {
+    final todoIndex = _todos.indexWhere((e) => e.id == todo.id);
+
+    _todos[todoIndex] = todo;
+
+    return Result.ok(todo);
   }
 }
