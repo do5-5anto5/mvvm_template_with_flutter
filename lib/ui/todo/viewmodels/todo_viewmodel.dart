@@ -10,6 +10,7 @@ class TodoViewmodel extends ChangeNotifier {
     load = Command0(_load)..execute();
     addTodo = Command1(_addTodo);
     deleteTodo = Command1(_deleteTodo);
+    updateTodo = Command1(_updateTodo);
   }
 
   final TodoRepository _todoRepository;
@@ -17,6 +18,7 @@ class TodoViewmodel extends ChangeNotifier {
   late Command0 load;
   late Command1<Todo, (String, String, bool)> addTodo;
   late Command1<void, Todo> deleteTodo;
+  late Command1<Todo, Todo> updateTodo;
 
   List<Todo> _todos = [];
 
@@ -41,10 +43,16 @@ class TodoViewmodel extends ChangeNotifier {
   Future<Result<Todo>> _addTodo((String, String, bool) todo) async {
     final (name, description, done) = todo;
 
-    final result = await _todoRepository.add(name: name, description: description, done: done);
+    final result = await _todoRepository.add(
+      name: name,
+      description: description,
+      done: done,
+    );
 
     switch (result) {
       case Ok<Todo>():
+        print('OK');
+
         // ATENÇÃO: No ambiente dev, o TodoRepositoryDev já adiciona o item à sua lista interna.
         // Não adicionar manualmente ao _todos para evitar duplicação.
         _todos.add(result.value);
@@ -68,6 +76,26 @@ class TodoViewmodel extends ChangeNotifier {
       case Error():
         //TODO: implement Logging
         break;
+    }
+
+    return result;
+  }
+
+  Future<Result<Todo>> _updateTodo(Todo todo) async {
+    final result = await _todoRepository.update(todo);
+
+    switch (result) {
+      case Ok<Todo>():
+        final todoIndex = _todos.indexWhere((e) => e.id == todo.id);
+        _todos[todoIndex] = todo;
+
+        notifyListeners();
+        return Result.ok(result.value);
+      case Error():
+        //TODO: implement Logging
+        break;
+      default:
+        return result;
     }
 
     return result;
