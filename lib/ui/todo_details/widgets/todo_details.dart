@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvvm_template_with_flutter/ui/todo_details/viewmodels/todo_details_viewmodel.dart';
+import 'package:mvvm_template_with_flutter/ui/todo_details/widgets/todo_description.dart';
 import 'package:mvvm_template_with_flutter/ui/todo_details/widgets/todo_name.dart';
 
 class TodoDetailsScreen extends StatefulWidget {
@@ -28,8 +29,15 @@ class _TodoDetailsScreenState extends State<TodoDetailsScreen> {
             );
           }
           return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TodoName(todo: widget.todoDetailsViewmodel.todo),
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                TodoName(todo: widget.todoDetailsViewmodel.todo),
+                SizedBox(height: 8),
+                if (widget.todoDetailsViewmodel.todo.description != "")
+                  TodoDescription(todo: widget.todoDetailsViewmodel.todo),
+              ],
+            ),
           );
         },
       ),
