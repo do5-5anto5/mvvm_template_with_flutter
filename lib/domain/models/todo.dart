@@ -16,7 +16,7 @@ class Todo {
       id: json["id"],
       name: json["name"],
       description: json["description"],
-      done: json["don"],
+      done: json["done"],
     );
   }
 
@@ -27,9 +27,9 @@ class Todo {
   Todo copyWith({String? id, String? name, String? description, bool? done}) {
     return Todo(
       id: id ?? this.id,
-      name: this.name,
-      description: this.description,
-      done: this.done,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      done: done ?? this.done,
     );
   }
 }
