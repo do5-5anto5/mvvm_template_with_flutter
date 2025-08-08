@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvvm_template_with_flutter/ui/todo_details/viewmodels/todo_details_viewmodel.dart';
+import 'package:mvvm_template_with_flutter/ui/todo_details/widgets/edit_todo_form.dart';
 import 'package:mvvm_template_with_flutter/ui/todo_details/widgets/todo_description.dart';
 import 'package:mvvm_template_with_flutter/ui/todo_details/widgets/todo_name.dart';
 
@@ -40,6 +41,27 @@ class _TodoDetailsScreenState extends State<TodoDetailsScreen> {
             ),
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return const AlertDialog(content: EditTodoForm());
+            },
+          );
+        },
+        child: ListenableBuilder(
+          listenable: widget.todoDetailsViewmodel.load,
+          builder: (context, child) {
+            if (widget.todoDetailsViewmodel.load.running ||
+                widget.todoDetailsViewmodel.load.error) {
+              return SizedBox();
+            }
+
+            return Icon(Icons.edit);
+          },
+        ),
       ),
     );
   }
