@@ -12,6 +12,9 @@ class AddTodoForm extends StatefulWidget {
 class _AddTodoFormState extends State<AddTodoForm> {
   final formKey = GlobalKey<FormState>();
   late final TextEditingController nameController = TextEditingController();
+  late final TextEditingController descriptionController =
+      TextEditingController();
+
   final vertigalGap = const SizedBox(height: 16);
 
   @override
@@ -81,15 +84,25 @@ class _AddTodoFormState extends State<AddTodoForm> {
                 },
               ),
               vertigalGap,
+              Expanded(
+                child: TextFormField(
+                  minLines: 3,
+                  maxLines: null,
+                  controller: descriptionController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Descrição',
+                  ),
+                ),
+              ),
+              vertigalGap,
               ElevatedButton(
                 onPressed: () {
-                  if (formKey.currentState?.validate() == true) {
-                    widget.todoViewmodel.addTodo.execute((
-                      nameController.text,
-                      "",
-                      false,
-                    ));
-                  }
+                  widget.todoViewmodel.addTodo.execute((
+                    nameController.text,
+                    descriptionController.text,
+                    false,
+                  ));
                 },
                 child: Text('Salvar'),
               ),
