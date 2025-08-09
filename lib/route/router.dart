@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mvvm_template_with_flutter/data/repositories/todo_repository.dart';
 import 'package:mvvm_template_with_flutter/data/repositories/todo_repository_remote.dart';
 import 'package:mvvm_template_with_flutter/data/services/api/api_client.dart';
+import 'package:mvvm_template_with_flutter/domain/use_cases/todo_update_use_case.dart';
 import 'package:mvvm_template_with_flutter/route/routes.dart';
 import 'package:mvvm_template_with_flutter/ui/todo/viewmodels/todo_viewmodel.dart';
 import 'package:mvvm_template_with_flutter/ui/todo/widgets/todo_screen.dart';
@@ -13,6 +14,8 @@ GoRouter routesConfig() {
     apiClient: ApiClient(host: '192.168.1.105'),
   );
 
+  final todoUpdateUseCase = TodoUpdateUseCase(todoRepository: todoRepository);
+
   return GoRouter(
     initialLocation: Routes.todos,
     routes: [
@@ -20,7 +23,10 @@ GoRouter routesConfig() {
         path: Routes.todos,
         builder: (context, state) {
           return TodoScreen(
-            todoViewmodel: TodoViewmodel(todoRepository: todoRepository),
+            todoViewmodel: TodoViewmodel(
+              todoRepository: todoRepository,
+              todoUpdateUsecase: todoUpdateUseCase,
+            ),
           );
         },
         routes: [
@@ -28,7 +34,10 @@ GoRouter routesConfig() {
             path: ':id',
             builder: (context, state) {
               final TodoDetailsViewmodel todoDetailsViewmodel =
-                  TodoDetailsViewmodel(todoRepository: todoRepository);
+                  TodoDetailsViewmodel(
+                    todoRepository: todoRepository,
+                    todoUpdateUseCase: todoUpdateUseCase,
+                  );
               final todoId = state.pathParameters['id']!;
 
               todoDetailsViewmodel.load.execute(todoId);
