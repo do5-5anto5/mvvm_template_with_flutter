@@ -1,8 +1,9 @@
-import 'package:mvvm_template_with_flutter/utils/result/result.dart';
+import 'package:flutter/material.dart';
 import 'package:mvvm_template_with_flutter/data/repositories/todo_repository.dart';
 import 'package:mvvm_template_with_flutter/domain/models/todo.dart';
+import 'package:mvvm_template_with_flutter/utils/result/result.dart';
 
-class TodoRepositoryDev extends TodoRepository {
+class TodoRepositoryDev extends ChangeNotifier implements TodoRepository {
   final List<Todo> _todos = [];
 
   @override
@@ -52,4 +53,7 @@ class TodoRepositoryDev extends TodoRepository {
 
     return Result.ok(todo);
   }
+  
+  @override
+  List<Todo> get todos => _todos;
 }
