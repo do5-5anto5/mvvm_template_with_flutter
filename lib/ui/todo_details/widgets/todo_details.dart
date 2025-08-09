@@ -47,7 +47,12 @@ class _TodoDetailsScreenState extends State<TodoDetailsScreen> {
           showDialog(
             context: context,
             builder: (context) {
-              return const AlertDialog(content: EditTodoForm());
+              return AlertDialog(
+                content: EditTodoForm(
+                  todo: widget.todoDetailsViewmodel.todo,
+                  todoDetailsViewmodel: widget.todoDetailsViewmodel,
+                ),
+              );
             },
           );
         },
