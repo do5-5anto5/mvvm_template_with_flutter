@@ -14,25 +14,37 @@ class TodoRepositoryDev extends ChangeNotifier implements TodoRepository {
   }) async {
     final lastIndex = _todos.length;
 
-    final createdTodo = Todo(
-      id: '${lastIndex + 1}',
-      name: name,
-      description: description,
-      done: done,
-    );
+    try {
+      final createdTodo = Todo(
+        id: '${lastIndex + 1}',
+        name: name,
+        description: description,
+        done: done,
+      );
 
-    _todos.add(createdTodo);
+      _todos.add(createdTodo);
 
-    return Result.ok(createdTodo);
+      return Result.ok(createdTodo);
+    } on Exception catch (error) {
+      return Result.error(error);
+    } finally {
+      notifyListeners();
+    }
   }
 
   @override
   Future<Result<void>> delete(Todo todo) async {
-    if (_todos.contains(todo)) {
-      _todos.remove(todo);
-    }
+    try {
+      if (_todos.contains(todo)) {
+        _todos.remove(todo);
+      }
 
-    return Result.ok(null);
+      return Result.ok(null);
+    } on Exception catch (error) {
+      return Result.error(error);
+    } finally {
+      notifyListeners();
+    }
   }
 
   @override
@@ -47,13 +59,19 @@ class TodoRepositoryDev extends ChangeNotifier implements TodoRepository {
 
   @override
   Future<Result<Todo>> update(Todo todo) async {
-    final todoIndex = _todos.indexWhere((e) => e.id == todo.id);
+    try {
+      final todoIndex = _todos.indexWhere((e) => e.id == todo.id);
 
-    _todos[todoIndex] = todo;
+      _todos[todoIndex] = todo;
 
-    return Result.ok(todo);
+      return Result.ok(todo);
+    } on Exception catch (error) {
+      return Result.error(error);
+    } finally {
+      notifyListeners();
+    }
   }
-  
+
   @override
   List<Todo> get todos => _todos;
 }

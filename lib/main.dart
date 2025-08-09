@@ -1,9 +1,10 @@
+import 'main_staging.dart' as staging;
+// import 'main_dev.dart' as dev;
+
 import 'package:flutter/material.dart';
 import 'package:mvvm_template_with_flutter/route/router.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => staging.main();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
