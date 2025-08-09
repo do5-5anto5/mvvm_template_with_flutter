@@ -1,21 +1,13 @@
 import 'package:go_router/go_router.dart';
 import 'package:mvvm_template_with_flutter/data/repositories/todo_repository.dart';
-import 'package:mvvm_template_with_flutter/data/repositories/todo_repository_remote.dart';
-import 'package:mvvm_template_with_flutter/data/services/api/api_client.dart';
-import 'package:mvvm_template_with_flutter/domain/use_cases/todo_update_use_case.dart';
 import 'package:mvvm_template_with_flutter/route/routes.dart';
 import 'package:mvvm_template_with_flutter/ui/todo/viewmodels/todo_viewmodel.dart';
 import 'package:mvvm_template_with_flutter/ui/todo/widgets/todo_screen.dart';
 import 'package:mvvm_template_with_flutter/ui/todo_details/viewmodels/todo_details_viewmodel.dart';
 import 'package:mvvm_template_with_flutter/ui/todo_details/widgets/todo_details.dart';
+import 'package:provider/provider.dart';
 
 GoRouter routesConfig() {
-  final TodoRepository todoRepository = TodoRepositoryRemote(
-    apiClient: ApiClient(host: '192.168.1.105'),
-  );
-
-  final todoUpdateUseCase = TodoUpdateUseCase(todoRepository: todoRepository);
-
   return GoRouter(
     initialLocation: Routes.todos,
     routes: [
@@ -24,8 +16,8 @@ GoRouter routesConfig() {
         builder: (context, state) {
           return TodoScreen(
             todoViewmodel: TodoViewmodel(
-              todoRepository: todoRepository,
-              todoUpdateUsecase: todoUpdateUseCase,
+              todoRepository: context.read<TodoRepository>(),
+              todoUpdateUsecase: context.read(),
             ),
           );
         },
@@ -35,8 +27,8 @@ GoRouter routesConfig() {
             builder: (context, state) {
               final TodoDetailsViewmodel todoDetailsViewmodel =
                   TodoDetailsViewmodel(
-                    todoRepository: todoRepository,
-                    todoUpdateUseCase: todoUpdateUseCase,
+                    todoRepository: context.read(),
+                    todoUpdateUseCase: context.read(),
                   );
               final todoId = state.pathParameters['id']!;
 
