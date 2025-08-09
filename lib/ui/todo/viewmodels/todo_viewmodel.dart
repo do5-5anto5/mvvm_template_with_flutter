@@ -6,12 +6,19 @@ import 'package:mvvm_template_with_flutter/data/repositories/todo_repository.dar
 import 'package:mvvm_template_with_flutter/domain/models/todo.dart';
 
 class TodoViewmodel extends ChangeNotifier {
-  TodoViewmodel({required TodoRepository todoRepository, required TodoUpdateUseCase todoUpdateUsecase})
-    : _todoRepository = todoRepository, _todoUpdateUseCase = todoUpdateUsecase {
+  TodoViewmodel({
+    required TodoRepository todoRepository,
+    required TodoUpdateUseCase todoUpdateUsecase,
+  }) : _todoRepository = todoRepository,
+       _todoUpdateUseCase = todoUpdateUsecase {
     load = Command0(_load)..execute();
     addTodo = Command1(_addTodo);
     deleteTodo = Command1(_deleteTodo);
     updateTodo = Command1((todo) => _todoUpdateUseCase.updateTodo(todo));
+    _todoRepository.addListener(() {
+      _todos = todoRepository.todos;
+      notifyListeners();
+    });
   }
 
   final TodoRepository _todoRepository;
@@ -54,10 +61,6 @@ class TodoViewmodel extends ChangeNotifier {
 
     switch (result) {
       case Ok<Todo>():
-        print('OK');
-
-        // ATENÇÃO: No ambiente dev, o TodoRepositoryDev já adiciona o item à sua lista interna.
-        // Não adicionar manualmente ao _todos para evitar duplicação.
         _todos.add(result.value);
         notifyListeners();
         break;
