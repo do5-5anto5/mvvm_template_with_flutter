@@ -1,4 +1,6 @@
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
+import 'package:mvvm_template_with_flutter/data/repositories/todo_repository_remote.dart';
 import 'package:mvvm_template_with_flutter/domain/use_cases/todo_update_use_case.dart';
 import 'package:mvvm_template_with_flutter/utils/commands/commands.dart';
 import 'package:mvvm_template_with_flutter/utils/result/result.dart';
@@ -34,56 +36,81 @@ class TodoViewmodel extends ChangeNotifier {
 
   List<Todo> get todos => _todos;
 
+  final _log = Logger("TodoViewmodel");
+
   Future<Result> _load() async {
-    final result = await _todoRepository.get();
+    try {
+      final result = await _todoRepository.get();
 
-    switch (result) {
-      case Ok<List<Todo>>():
-        _todos = result.value;
-        notifyListeners();
-        break;
-      case Error():
-        //TODO: implement Logging
-        break;
+      switch (result) {
+        case Ok<List<Todo>>():
+          _todos = result.value;
+          _log.fine('Tarefas carregadas');
+          break;
+        case Error():
+          _log.warning('Falha ao carregar tarefas', result.error);
+          break;
+      }
+
+      return result;
+    } on Exception catch (error, stackTrace) {
+      _log.warning('Falha ao carregar tarefas', error, stackTrace);
+      return Result.error(error);
+    } finally {
+      notifyListeners();
     }
-
-    return result;
   }
 
   Future<Result<Todo>> _addTodo((String, String, bool) todo) async {
-    final (name, description, done) = todo;
+    try {
+      final (name, description, done) = todo;
 
-    final result = await _todoRepository.add(
-      name: name,
-      description: description,
-      done: done,
-    );
+      final result = await _todoRepository.add(
+        name: name,
+        description: description,
+        done: done,
+      );
 
-    switch (result) {
-      case Ok<Todo>():
-        _todos.add(result.value);
-        notifyListeners();
-        break;
-      case Error():
-      //TODO: implement LOGGING
-      default:
+      switch (result) {
+        case Ok<Todo>():
+          if (_todoRepository is TodoRepositoryRemote) {
+            _todos.add(result.value);
+          }
+          _log.fine('Adição de Tarefa concluída.');
+          _load();
+        case Error():
+          _log.warning('Falha ao adicionar Tarefa', result.error);
+        default:
+      }
+      return result;
+    } on Exception catch (error, stackTrace) {
+      _log.warning('Falha adicionar Tarefa', error, stackTrace);
+      return Result.error(error);
+    } finally {
+      notifyListeners();
     }
-    return result;
   }
 
   Future<Result<void>> _deleteTodo(Todo todo) async {
-    final result = await _todoRepository.delete(todo);
+    try {
+      final result = await _todoRepository.delete(todo);
 
-    switch (result) {
-      case Ok<void>():
-        _todos.remove(todo);
-        notifyListeners();
-        break;
-      case Error():
-        //TODO: implement Logging
-        break;
+      switch (result) {
+        case Ok<void>():
+          _todos.remove(todo);
+          _log.fine('Tarefa removida');
+          break;
+        case Error():
+          _log.warning('Falha ao deletar Tarefa', result.error);
+          break;
+      }
+
+      return result;
+    } on Exception catch (error, stackTrace) {
+      _log.warning('Falha deletar Tarefa', error, stackTrace);
+      return Result.error(error);
+    } finally {
+      notifyListeners();
     }
-
-    return result;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:mvvm_template_with_flutter/data/repositories/todo_repository.dart';
 import 'package:mvvm_template_with_flutter/domain/models/todo.dart';
 import 'package:mvvm_template_with_flutter/domain/use_cases/todo_update_use_case.dart';
@@ -28,6 +29,8 @@ class TodoDetailsViewmodel extends ChangeNotifier {
   late Todo _todo;
   Todo get todo => _todo;
 
+  final _log = Logger('TodoDetailsViewmodel');
+
   Future<Result<Todo>> _load(String id) async {
     try {
       final result = await _todoRepository.getById(id);
@@ -35,6 +38,7 @@ class TodoDetailsViewmodel extends ChangeNotifier {
       switch (result) {
         case Ok<Todo>():
           _todo = result.value;
+          _log.fine('Tarefa carregada.');
           return Result.ok(result.value);
         default:
           return result;
