@@ -20,6 +20,8 @@ void main() {
     test('should return Ok when postTodo()', () async {
       const CreateTodoApiModel todoToCreate = CreateTodoApiModel(
         name: 'Todo created on Test',
+        description: 'Test description',
+        done: false,
       );
       final result = await apiClient.postTodo(todoToCreate);
 
@@ -31,6 +33,8 @@ void main() {
     test('should return Ok when deleteTodo()', () async {
       const CreateTodoApiModel todoToCreate = CreateTodoApiModel(
         name: 'Todo created on Test',
+        description: 'Test description',
+        done: false,
       );
 
       final createTodoResult = await apiClient.postTodo(todoToCreate);
@@ -43,6 +47,8 @@ void main() {
     test('should return Ok when updateTodo()', () async {
       const CreateTodoApiModel todoToCreate = CreateTodoApiModel(
         name: 'Todo created on Test',
+        description: 'Test description',
+        done: false,
       );
 
       final createTodoResult = await apiClient.postTodo(todoToCreate);
@@ -52,15 +58,20 @@ void main() {
           id: createTodoResult.asOk.value.id!,
           name:
               '${createTodoResult.asOk.value.id} updated at ${DateTime.now().toIso8601String()}',
+          description: 'Test description',
+          done: true,
         ),
       );
 
       expect(result, isA<Result<Todo>>());
+      expect(result.asOk.value.done, true);
     });
 
     test('should get to by id', () async {
       const CreateTodoApiModel todoToCreate = CreateTodoApiModel(
         name: 'Todo created on Test',
+        description: 'Test description',
+        done: false,
       );
 
       final createTodoResult = await apiClient.postTodo(todoToCreate);
